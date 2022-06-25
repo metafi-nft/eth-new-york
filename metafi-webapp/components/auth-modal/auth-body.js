@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useWeb3 } from '../../contexts/wallet-context'
+import { createWallet } from '../../utility/wallet-utils';
 
 const AuthBody = (props)=>{
     var keystoreArray = localStorage.getItem('ksa')

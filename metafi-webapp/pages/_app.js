@@ -27,13 +27,15 @@ const MyApp = (props) => {
   return (
     <CacheProvider value={emotionCache}>
       {pageLoaded?
-      <WalletProvider>
+
         <Provider store={store} >
+          <WalletProvider>
             <CssBaseline />
             <Component {...pageProps} />
+          </WalletProvider>
 
         </Provider>
-      </WalletProvider>
+
 
       :
       <></>

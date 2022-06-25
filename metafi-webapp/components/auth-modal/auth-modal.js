@@ -3,8 +3,9 @@ import { Button, Dialog, DialogContent, DialogTitle, Grid, Icon, IconButton, Inp
 
 import AuthHeader from './auth-header';
 import AuthBody from './auth-body';
+import { useWeb3 } from '../../contexts/wallet-context';
 const AuthModal = (props)=>{
-   
+    const {showAuthModal} = useWeb3()
     return <Dialog open={showAuthModal} >
         <DialogTitle>
             <AuthHeader/>
