@@ -35,7 +35,7 @@ export const WalletProvider = ({children}) =>{
 
         var wallet = sessionStorage.getItem('wallet')
         if(wallet!==null){
-            window.web3 = new Web3('https://eth-rinkeby.alchemyapi.io/v2/VpqW4lD7DYfTwhmOvkRexky9H2_sAXfZ');
+            window.web3 = new Web3(process.env.IPADDRESS);
             setEthereum(window.web3)
             setAccount(JSON.parse(wallet))
         }
