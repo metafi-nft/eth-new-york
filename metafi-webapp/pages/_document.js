@@ -35,7 +35,7 @@ export default class MyDocument extends Document {
             }}
           />
         </Head>
-        <body style={{background:'#212429'}}>
+        <body >
           <Main />
           <NextScript />
         </body>
