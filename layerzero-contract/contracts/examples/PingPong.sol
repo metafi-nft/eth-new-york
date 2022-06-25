@@ -16,6 +16,7 @@ pragma abicoder v2;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "../lzApp/NonblockingLzApp.sol";
+import "hardhat/console.sol";
 
 contract PingPong is NonblockingLzApp, Pausable {
     // event emitted every ping() to keep track of consecutive pings count
@@ -39,6 +40,7 @@ contract PingPong is NonblockingLzApp, Pausable {
         address _dstPingPongAddr, // destination address of PingPong contract
         uint pings // the number of pings
     ) public whenNotPaused {
+        console.log("enter ping function for contract=%s, balance=%s", address(this), address(this).balance);
         require(this.isTrustedRemote(_dstChainId, abi.encodePacked(_dstPingPongAddr)), "you must allow inbound messages to ALL contracts with setTrustedRemote()");
         require(address(this).balance > 0, "the balance of this contract is 0. pls send gas for message fees");
 
@@ -56,6 +58,7 @@ contract PingPong is NonblockingLzApp, Pausable {
         (uint messageFee, ) = lzEndpoint.estimateFees(_dstChainId, address(this), payload, false, adapterParams);
         require(address(this).balance >= messageFee, "address(this).balance < messageFee. fund this contract with more ether");
 
+        console.log("leaving ping function for contract=", address(this));
         // send LayerZero message
         lzEndpoint.send{value: messageFee}( // {value: messageFee} will be paid out of this contract!
             _dstChainId, // destination chainId
@@ -73,6 +76,7 @@ contract PingPong is NonblockingLzApp, Pausable {
         uint64, /*_nonce*/
         bytes memory _payload
     ) internal override {
+        console.log("enter receive function for contract=", address(this));
         // use assembly to extract the address from the bytes memory parameter
         address sendBackToAddress;
         assembly {
@@ -82,6 +86,7 @@ contract PingPong is NonblockingLzApp, Pausable {
         // decode the number of pings sent thus far
         uint pings = abi.decode(_payload, (uint));
 
+        console.log("leaving receive function for contract=%s, balance=%s", address(this), address(this).balance);
         // *pong* back to the other side
         ping(_srcChainId, sendBackToAddress, pings);
     }

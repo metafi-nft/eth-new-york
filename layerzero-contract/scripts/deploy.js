@@ -1,30 +1,26 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+export async function deploy() {
+  const LzMock = await hre.ethers.getContractFactory("LZEndpointMock");
+  // const greeter = await Greeter.deploy(hre.ethers.BigNumber.from(31337));
+  const lzMock = await LzMock.deploy(31337);
+  await lzMock.deployed();
+  console.log("LZEndpointMock deployed to:", lzMock.address);
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("LZEndpointMock");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const PingPong = await hre.ethers.getContractFactory("PingPong");
+  // pp1
+  const pingPong1 = await PingPong.deploy(lzMock.address);
+  await pingPong1.deployed();
+  console.log("PingPong1 deployed to:", pingPong1.address);
+  // pp2
+  const pingPong2 = await PingPong.deploy(lzMock.address);
+  await pingPong2.deployed();
+  console.log("PingPong2 deployed to:", pingPong2.address);
 
-  await greeter.deployed();
-
-  console.log("LZEndpointMock deployed to:", greeter.address);
+  return [lzMock.address, pingPong1.address, pingPong2.address];
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// deploy().catch((error) => {
+//   console.error(error);
+//   process.exitCode = 1;
+// });
