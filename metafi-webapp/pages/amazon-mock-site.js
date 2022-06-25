@@ -1,6 +1,7 @@
 import { AppBar, Grid, Typography } from '@mui/material'
 import React from 'react' 
 import ProductDetails from '../components/amazon-mock/product-details'
+import AuthModal from '../components/auth-modal/auth-modal'
 import TransactionModal from '../components/transaction-modal/transaction-modal'
 import { useWeb3 } from '../contexts/wallet-context'
 
@@ -12,6 +13,7 @@ const AmazonMockSite = (props)=>{
             <ProductDetails/>
         </Grid>
         <TransactionModal/>
+        <AuthModal/>
     </Grid>
 
 }

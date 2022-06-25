@@ -64,7 +64,15 @@ export const WalletProvider = ({children}) =>{
     }
 
     const requestTransaction = (transaction)=>{
-        setShowTransactionModal(true)
+        if(account===''){
+            setShowAuthModal(true)
+        }else{
+            setShowTransactionModal(true)
+        }
+        //check if logged in
+        //if logged in, show transaction modal
+        //else prompt for login
+
         setTransaction({
             url:transaction.url,
             toWalletAddress:transaction.toWalletAddress,
@@ -92,6 +100,7 @@ export const WalletProvider = ({children}) =>{
                 var wallet = accounts["0"]
                 sessionStorage.setItem('wallet',JSON.stringify(wallet))
                 setAccount(wallet)
+                
             }else{
                 setAccount(JSON.parse(wallet))
             }
@@ -102,6 +111,13 @@ export const WalletProvider = ({children}) =>{
             setEthereum(window.web3)
             setShowAuthModal(false)
             setLoading(false)
+
+            //if there is a transaction in the state, show the transaction modal
+            if(transaction!=='')
+            {
+                setShowTransactionModal(true)
+            }
+
         }catch(error){
             setLoading(false)
             console.log(error)

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import LoadingOverlay from './loading-overlay'
 
 const TransactionModal = (props)=>{
-    const {showTransactionModal,approveTransaction,transaction} = useWeb3()
+    const {showTransactionModal,approveTransaction,transaction,rejectTransaction} = useWeb3()
     const USDRates = useSelector(state=>state.walletReducer.USDRates)
     var usdAmount = transaction.amount/USDRates[transaction.symbol]
     var gasFees = 0
@@ -69,7 +69,7 @@ const TransactionModal = (props)=>{
                                 </Button>
                             </Grid>
                             <Grid item xs={6} style={{paddingLeft:4}}>
-                                <Button variant='outlined' fullWidth>
+                                <Button onClick={rejectTransaction} variant='outlined' fullWidth>
                                     Reject
                                 </Button>
                             </Grid>
