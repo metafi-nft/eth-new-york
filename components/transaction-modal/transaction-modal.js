@@ -22,7 +22,7 @@ const TransactionModal = (props)=>{
                 transaction===''?"":
                 <Grid container>
                     <Grid item xs={12} style={{marginBottom:16}}>
-                        <Typography style={{fontSize:14}}><a style={{color:'#2172E5'}} href={transaction.url} target='_blank'>{transaction.url}</a> is requesting the following transaction:</Typography>
+                        <Typography style={{fontSize:14}}><a style={{color:'#2172E5'}} href={transaction.url} rel="noreferrer" target='_blank'>{transaction.url}</a> is requesting the following transaction:</Typography>
                     </Grid>
                     <Grid item xs={12} style={{marginBottom:16}}>
                         <Typography style={{marginBottom:8}}><strong>Transfer</strong></Typography>
