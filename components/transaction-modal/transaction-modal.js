@@ -60,7 +60,7 @@ const TransactionModal = (props)=>{
                             </Grid>
                         }
                         <Grid container direction='row' style={{alignItems:'center',marginBottom:8}}>
-                            <Typography style={{flexGrow:1,fontSize:14}}><strong>Commission</strong></Typography>
+                            <Typography style={{flexGrow:1,fontSize:14}}><strong>Metafi Fees</strong></Typography>
                             <Typography style={{fontSize:14,color:'#949494'}}>USD {transaction.commission.toFixed(2)}</Typography>
                         </Grid>
                         <Grid container direction='row' style={{alignItems:'center'}}>

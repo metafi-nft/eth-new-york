@@ -45,8 +45,8 @@ const ProductDetails = (props)=>{
             <Grid container style={{alignItems:'center'}}>
                 <Grid item xs={12} md={4}>
                 <img
-                        src={'https://m.media-amazon.com/images/I/61Y30DpqRVL._AC_SX679_.jpg'}
-                        style={{width:'100%'}}
+                    src={'https://m.media-amazon.com/images/I/61Y30DpqRVL._AC_SX679_.jpg'}
+                    style={{width:'100%'}}
                 />
                 </Grid>
                 <Grid item xs={12} md={8} style={{padding:8}}>

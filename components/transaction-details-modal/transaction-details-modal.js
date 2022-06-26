@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux'
 import LoadingOverlay from './loading-overlay'
 import CloseIcon from '@mui/icons-material/Close';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import { useRouter } from 'next/router'
 const TransactionDetailsModal = (props)=>{
+    const router = useRouter()
     const {transactionDetails,transactionLoading,showTransactionDetailsModal,closeTransactionDetails} = useWeb3()
 
     var transactionPaths = []
@@ -70,11 +72,17 @@ const TransactionDetailsModal = (props)=>{
                         </Grid>
    
                     </Grid>
-                    <Grid item xs={12} style={{marginBottom:16}}>
+                    <Grid item xs={12} style={{marginBottom:32}}>
                         <Grid container direction='row' style={{alignItems:'center'}}>
                             <Typography style={{flexGrow:1}}><strong>Total</strong></Typography>
                             <Typography><strong>USD {(transactionDetails.transactionAmount + transactionDetails.gasFees + transactionDetails.commission).toFixed(2)}</strong></Typography>
                         </Grid>
+        
+                    </Grid>
+                    <Grid item xs={12} style={{marginBottom:16}}>
+                        <Button fullWidth onClick={()=>{
+                            window.open(process.env.BASEURL, "_blank");
+                        }}>View Wallet Balance</Button>
         
                     </Grid>
                 </Grid>

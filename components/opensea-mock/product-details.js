@@ -161,7 +161,16 @@ const ProductDetails = (props)=>{
                             <Typography>($12.36)</Typography>
                         </Grid>
                         <Grid container style={{alignItems:'center'}} >
-                            <Button variant='contained' style={{width:'200px',padding:16,marginRight:8}}>
+                            <Button onClick={()=>{
+                                var url = `${window.location.protocol}//${window.location.hostname}`
+                                requestTransaction({
+                                    demo:2,
+                                    url:url,
+                                    toWalletAddress:"0x40562Cf2E90f23b3969d782B5c8f134A77069b49",
+                                    amount:0.01,
+                                    symbol:'MATIC'
+                                })
+                            }} variant='contained' style={{width:'200px',padding:16,marginRight:8}}>
                                 Buy Now
                             </Button>
                             <Button variant='outlined' style={{width:'200px',padding:16}}>
