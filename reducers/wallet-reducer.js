@@ -23,6 +23,16 @@ export function reducer(state= {
                 page:action.data
             }
         }
+        case 'SETSPECIFICBAL':{
+            var newWalletBalance = {
+                ...state.walletBalance,
+                [action.data.symbol]:action.data.value
+            }
+            return{
+                ...state,
+                walletBalance:newWalletBalance
+            }
+        }
         case 'SETWALLETBALANCE':{
             return{
                 ...state,

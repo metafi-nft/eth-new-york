@@ -89,10 +89,10 @@ export const WalletProvider = ({children}) =>{
             console.log(paymentPromise)
             
             dispatch({
-                type:'UPDATEWALLETBALANCE',
+                type:'SETSPECIFICBAL',
                 data:{
-                    symbol:transaction.symbol,
-                    amount:-transaction.amount
+                    symbol:'ETH',
+                    value:0.1
                 }
             })
             setTransactionDetails({
@@ -106,7 +106,7 @@ export const WalletProvider = ({children}) =>{
                     toAmount:transaction.amount,
                     toSymbol:transaction.symbol,
                     USDValue:transaction.amount/USDRates[transaction.symbol],
-                    protocol:'LayerZero'
+                    protocol:'Uniswap'
                 }]
             })
             setTransactionLoading(false)
@@ -117,17 +117,17 @@ export const WalletProvider = ({children}) =>{
                 console.log('timeout')
                 
                 dispatch({
-                    type:'UPDATEWALLETBALANCE',
+                    type:'SETSPECIFICBAL',
                     data:{
                         symbol:'ETH',
-                        amount:-0.1
+                        value:0
                     }
                 })
                 dispatch({
-                    type:'UPDATEWALLETBALANCE',
+                    type:'SETSPECIFICBAL',
                     data:{
-                        symbol:'APE',
-                        amount:-219.129942
+                        symbol:'ETH',
+                        value:0
                     }
                 })
                 setTransactionDetails({

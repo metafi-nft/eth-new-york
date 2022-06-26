@@ -93,7 +93,7 @@ const TransactionDetailsModal = (props)=>{
                             <Button fullWidth onClick={()=>{
                                 
             
-                                window.open(process.env.BASEURL, "_blank");
+                                window.open(transactionDetails.url, "_blank");
                                 
                             }}>View on Etherscan</Button>
             
