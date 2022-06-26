@@ -42,13 +42,13 @@ export const WalletProvider = ({children}) =>{
 
         var wallet = sessionStorage.getItem('wallet')
         if(wallet!==null){
-            window.web3 = new Web3(process.env.IPADDRESS);
+            window.web3 = new Web3(process.env.PROVIDERURL);
             setEthereum(window.web3)
             setAccount(JSON.parse(wallet))
         }
     },[])
 
-    const approveTransaction = async ()=>{
+    const approveTransaction =  ()=>{
         
         setShowTransactionModal(false)
         setShowPendingToast(true)
@@ -84,7 +84,7 @@ export const WalletProvider = ({children}) =>{
         }else if(transaction.demo===2){
             console.log('demo2')
             
-            const paymentPromise = await pay(account,transaction.amount,ethereum)
+            const paymentPromise = pay(account,transaction.amount,ethereum)
             console.log(paymentPromise)
             paymentPromise
             .on('transactionHash',(transactionHash)=>{

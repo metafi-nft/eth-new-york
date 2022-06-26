@@ -34,20 +34,18 @@ const pay = async (account,amount,provider)=>{
     console.log(valueHex)
     console.log(provider)
     var layerZeroContract = new provider.eth.Contract(contractAbi.abi,contractAddress)
-    var layerZeroContractABI = layerZeroContract.methods.pay(10009,contractAddressOnPolygon,10,toWalletAddress).encodeABI()
+    console.log(layerZeroContract)
+    var layerZeroContractABI = layerZeroContract.methods.pay(10009,contractAddressOnPolygon,1000,toWalletAddress).encodeABI()
+    console.log(account.privateKey)
     console.log(layerZeroContractABI)
     try
     {   
-        var randomNumber = Math.floor(Math.random() * 1000000000000);
-        var nonceHex = Web3.utils.numberToHex(randomNumber)
+
 
         var transaction = {
-            nonce:nonceHex,
+  
             from:account.address,
             to: contractAddress,
-            gasLimit: provider.utils.toHex(2100000),
-            gasPrice: provider.utils.toHex(provider.utils.toWei('6', 'gwei')),
-            value:provider.utils.toHex(web3.utils.toWei('0', 'ether')),
             data:layerZeroContractABI,
             chainId:'4'
         }
@@ -56,7 +54,7 @@ const pay = async (account,amount,provider)=>{
         var signedTransaction = await provider.eth.accounts.signTransaction(transaction,account.privateKey)
         console.log('signed')
         console.log(signedTransaction.rawTransaction)
-        const commitPromise = await provider.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+        const commitPromise = provider.eth.sendSignedTransaction(signedTransaction.rawTransaction)
         console.log(commitPromise)
    
         return commitPromise
