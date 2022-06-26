@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 const TransactionDetailsModal = (props)=>{
     const router = useRouter()
     const {transactionDetails,transactionLoading,showTransactionDetailsModal,closeTransactionDetails} = useWeb3()
-
+    console.log(transactionDetails)
     var transactionPaths = []
     if(transactionDetails!==''&&transactionDetails.transactionPaths.length>0){
         transactionPaths = transactionDetails.transactionPaths.map((transactionPath,index)=>{
@@ -81,10 +81,17 @@ const TransactionDetailsModal = (props)=>{
                     </Grid>
                     <Grid item xs={12} style={{marginBottom:16}}>
                         <Button fullWidth onClick={()=>{
-                            window.open(process.env.BASEURL, "_blank");
+                            
+                            if(transactionDetails.url!==''){
+                    
+                                window.open(transactionDetails.url, "_blank");
+                            }else{
+                                window.open(process.env.BASEURL, "_blank");
+                            }
                         }}>View Wallet Balance</Button>
         
                     </Grid>
+
                 </Grid>
             }
             {

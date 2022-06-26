@@ -48,7 +48,7 @@ export const WalletProvider = ({children}) =>{
         }
     },[])
 
-    const approveTransaction =  ()=>{
+    const approveTransaction = async ()=>{
         
         setShowTransactionModal(false)
         setShowPendingToast(true)
@@ -67,6 +67,7 @@ export const WalletProvider = ({children}) =>{
                     transactionAmount:transaction.amount,
                     gasFees:0,
                     commission:transaction.amount*0.015,
+                    url:"",
                     transactionPaths:[{
                         fromAmount:transaction.amount,
                         fromSymbol:transaction.symbol,
@@ -84,51 +85,33 @@ export const WalletProvider = ({children}) =>{
         }else if(transaction.demo===2){
             console.log('demo2')
             
-            const paymentPromise = pay(account,transaction.amount,ethereum)
+            const paymentPromise = await pay(account,transaction.amount,ethereum)
             console.log(paymentPromise)
-            paymentPromise
-            .on('transactionHash',(transactionHash)=>{
-                console.log('hash')
-                console.log(transactionHash) 
-                //TODO: Call Backend API
-                
+            
+            dispatch({
+                type:'UPDATEWALLETBALANCE',
+                data:{
+                    symbol:transaction.symbol,
+                    amount:-transaction.amount
+                }
             })
-            .on('receipt',(receipt)=>{
-                console.log(receipt)
-                //TODO: Change investment state to not invested if commitment is 0
-                dispatch({
-                    type:'UPDATEWALLETBALANCE',
-                    data:{
-                        symbol:transaction.symbol,
-                        amount:-transaction.amount
-                    }
-                })
-                setTransactionDetails({
-                    transactionAmount:transaction.amount/USDRates[transaction.symbol],
-                    gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
-                    commission:(transaction.amount*0.015)/USDRates[transaction.symbol],
-                    transactionPaths:[{
-                        fromAmount:0.01,
-                        fromSymbol:'ETH',
-                        toAmount:transaction.amount,
-                        toSymbol:transaction.symbol,
-                        USDValue:transaction.amount/USDRates[transaction.symbol],
-                        protocol:'LayerZero'
-                    }]
-                })
-                setTransactionLoading(false)
-                setShowPendingToast(false)
-                setShowSuccessToast(true)
-
-               
+            setTransactionDetails({
+                transactionAmount:transaction.amount/USDRates[transaction.symbol],
+                gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
+                commission:(transaction.amount*0.015)/USDRates[transaction.symbol],
+                url:`https://rinkeby.etherscan.io/tx/${paymentPromise.transactionHash}`,
+                transactionPaths:[{
+                    fromAmount:0.01,
+                    fromSymbol:'ETH',
+                    toAmount:transaction.amount,
+                    toSymbol:transaction.symbol,
+                    USDValue:transaction.amount/USDRates[transaction.symbol],
+                    protocol:'LayerZero'
+                }]
             })
-            .on('confirmation',(confirmationNumber, receipt)=>{
-                console.log("confirmationNumber=", confirmationNumber)
-            })
-            .on('error',(error)=>{
-                console.log("error whilepaying, err=", error)
-                
-            })
+            setTransactionLoading(false)
+            setShowPendingToast(false)
+            setShowSuccessToast(true)
         }else if(transaction.demo===3){
             setTimeout(()=>{
                 console.log('timeout')
@@ -151,6 +134,7 @@ export const WalletProvider = ({children}) =>{
                     transactionAmount:transaction.amount/USDRates[transaction.symbol],
                     gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
                     commission:(transaction.amount*0.015)/USDRates[transaction.symbol],
+                    url:"",
                     transactionPaths:[{
                         fromAmount:0.1,
                         fromSymbol:transaction.symbol,
