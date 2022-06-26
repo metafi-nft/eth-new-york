@@ -64,6 +64,7 @@ export const WalletProvider = ({children}) =>{
                     }
                 })
                 setTransactionDetails({
+                    demo:transaction.demo,
                     transactionAmount:transaction.amount,
                     gasFees:0,
                     commission:transaction.amount*0.015,
@@ -96,6 +97,7 @@ export const WalletProvider = ({children}) =>{
                 }
             })
             setTransactionDetails({
+                demo:transaction.demo,
                 transactionAmount:transaction.amount/USDRates[transaction.symbol],
                 gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
                 commission:(transaction.amount*0.015)/USDRates[transaction.symbol],
@@ -131,6 +133,7 @@ export const WalletProvider = ({children}) =>{
                     }
                 })
                 setTransactionDetails({
+                    demo:transaction.demo,
                     transactionAmount:transaction.amount/USDRates[transaction.symbol],
                     gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
                     commission:(transaction.amount*0.015)/USDRates[transaction.symbol],

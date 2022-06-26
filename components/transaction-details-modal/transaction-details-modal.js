@@ -89,7 +89,7 @@ const TransactionDetailsModal = (props)=>{
         
                     </Grid>
                     {
-                        transactionDetails.url!==''?<Grid item xs={12} style={{marginBottom:8}}>
+                        transactionDetails.demo!==1?<Grid item xs={12} style={{marginBottom:8}}>
                             <Button fullWidth onClick={()=>{
                                 
             
