@@ -9,7 +9,7 @@ const TransactionModal = (props)=>{
     const USDRates = useSelector(state=>state.walletReducer.USDRates)
     var usdAmount = transaction.amount/USDRates[transaction.symbol]
     console.log(transaction.demo==1)
-    var toWalletAddress = transaction.toWalletAddress.substring(0,5) + "..." + transaction.toWalletAddress.substring(transaction.toWalletAddress.length-4)
+    var toWalletAddress = transaction!==''?transaction.toWalletAddress.substring(0,5) + "..." + transaction.toWalletAddress.substring(transaction.toWalletAddress.length-4):""
     if(transaction.demo==1)
     {
         toWalletAddress = transaction.toWalletAddress
