@@ -20,21 +20,21 @@ const ProductDetails = (props)=>{
                         src={'/images/mac1.png'}
                         style={{height:75}}
                     />
-                    <Typography style={{fontSize:14,color:'#1260CC'}}>Macbook Air 13" (M1)</Typography>
+                    <Typography style={{fontSize:14,color:'#1260CC'}}>{`Macbook Air 13" (M1)`}</Typography>
                 </Grid>
                 <Grid item xs>
                     <img
                         src={'/images/mac2.png'}
                         style={{height:75}}
                     />
-                    <Typography style={{fontSize:14,color:'#1260CC'}}>Macbook Air 13" (M2)</Typography>
+                    <Typography style={{fontSize:14,color:'#1260CC'}}>{`Macbook Air 13" (M2)`}</Typography>
                 </Grid>
                 <Grid item xs>
                     <img
                         src={'/images/mac3.png'}
                         style={{height:75}}
                     />
-                    <Typography style={{fontSize:14,color:'#1260CC'}}>Macbook Air 14" (M1)</Typography>
+                    <Typography style={{fontSize:14,color:'#1260CC'}}>{`Macbook Air 14" (M1)`}</Typography>
                 </Grid>
             
             </Grid>

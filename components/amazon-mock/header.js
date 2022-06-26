@@ -41,7 +41,7 @@ const AmazonHeader = (props)=>{
             <Grid container direction={'row'} style={{background:'#232F3E',alignItems:'center',paddingLeft:16,paddingRight:16,paddingTop:8,paddingBottom:8}}>
                 <MenuIcon style={{marginRight:8,color:'white'}}/>
                 <Typography style={{fontSize:14,marginRight:8,color:'white'}}><strong>All</strong></Typography>
-                <Typography style={{fontSize:14,marginRight:8,color:'white'}}>Today's Deals</Typography>
+                <Typography style={{fontSize:14,marginRight:8,color:'white'}}>{`Today's Deals`}</Typography>
                 <Typography style={{fontSize:14,marginRight:8,color:'white'}}>Customer Service</Typography>
                 <Typography style={{fontSize:14,marginRight:8,color:'white'}}>Gift Card</Typography>
             </Grid>
