@@ -79,19 +79,26 @@ const TransactionDetailsModal = (props)=>{
                         </Grid>
         
                     </Grid>
-                    <Grid item xs={12} style={{marginBottom:16}}>
+                    <Grid item xs={12} style={{marginBottom:8}}>
                         <Button fullWidth onClick={()=>{
                             
-                            if(transactionDetails.url!==''){
-                    
-                                window.open(transactionDetails.url, "_blank");
-                            }else{
-                                window.open(process.env.BASEURL, "_blank");
-                            }
+           
+                            window.open(process.env.BASEURL, "_blank");
+                            
                         }}>View Wallet Balance</Button>
         
                     </Grid>
-
+                    {
+                        transactionDetails.url!==''?<Grid item xs={12} style={{marginBottom:8}}>
+                            <Button fullWidth onClick={()=>{
+                                
+            
+                                window.open(process.env.BASEURL, "_blank");
+                                
+                            }}>View on Etherscan</Button>
+            
+                        </Grid>:""
+                    }
                 </Grid>
             }
             {
