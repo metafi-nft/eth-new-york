@@ -128,7 +128,7 @@ export const WalletProvider = ({children}) =>{
                 dispatch({
                     type:'SETSPECIFICBAL',
                     data:{
-                        symbol:'ETH',
+                        symbol:'APE',
                         value:0
                     }
                 })
