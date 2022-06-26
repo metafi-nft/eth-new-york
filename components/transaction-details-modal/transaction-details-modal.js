@@ -48,7 +48,7 @@ const TransactionDetailsModal = (props)=>{
         </DialogTitle>
         <DialogContent>
             {
-                transactionDetails===''||transactionLoading?"":
+                transactionDetails===''||transactionLoading?<Grid container style={{height:100}}></Grid>:
                 <Grid container>
                     <Grid item xs={12} style={{marginBottom:16}}>
                         <Grid container direction='row' style={{alignItems:'center',marginBottom:16}}>
