@@ -11,17 +11,18 @@ async function pay() {
   const senderContractCaller = new ethers.Contract(srcMetafiAddress, contractABI, caller);
 
   console.log("Balances, balance of sendingWallet=", await ethers.provider.getBalance(caller.address));
-  // function pay(
-  //   uint16 _dstChainId, // pay to this destination chainId
-  //   address _dstMetafiBridgeAddr, // destination address of MetafiBridge contract
-  //   uint amount,
-  //   address dstAddr 
-  
+
   console.log("calling pay from sender wallet")
   options = {
-    value: ethers.utils.parseEther('0.0011293', 'ether')
+    value: ethers.utils.parseEther('0.00071', 'ether')
   }
-  await senderContractCaller.pay(10009, dstMetafiAddr, options.value, dstWalletAddr, options)
+  await senderContractCaller.pay( // binding the smart contract to the private key
+    10009, // chain ID set by layer zero for matic (copy, dont change to actual matic chain ID)
+    dstMetafiAddr, // Metafi smart contract address on polygon chain
+    options.value, // Amount to send
+    dstWalletAddr, // Wallet address in polygon
+    options, 
+  );
 
   console.log("Balances, balance of sendingWallet=", await ethers.provider.getBalance(caller.address));
 }
