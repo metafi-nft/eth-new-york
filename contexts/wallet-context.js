@@ -1,29 +1,36 @@
 
-import { Grid, Paper, Snackbar, Typography } from '@mui/material'
+import { Button, Grid, Paper, Snackbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import Web3 from 'web3'
 import { decryptWallet } from '../utility/wallet-utils'
 const WalletContext = React.createContext(null)
 
 export const WalletProvider = ({children}) =>{
     const dispatch = useDispatch()
+    const USDRates = useSelector((state)=>state.walletReducer.USDRates)
+
     const [loading,setLoading] = useState(false)
     const [account,setAccount] = useState('')
     const [ethereum,setEthereum] = useState('')
     const [showAuthModal,setShowAuthModal] = useState(false)
     const [showTransactionModal,setShowTransactionModal] = useState(false)
     const [showSuccessToast,setShowSuccessToast] = useState(false)
+    const [showTransactionDetailsModal,setShowTransactionDetailsModal] = useState(false)
     const [showPendingToast,setShowPendingToast] = useState(false)
     const [transaction,setTransaction] = useState('')
+    const [transactionDetails,setTransactionDetails] = useState('')
+    const [transactionLoading,setTransactionLoading] = useState(false)
     
     useEffect(()=>{
         var walletBalance = sessionStorage.getItem('walletBalance')
         if(walletBalance===null){
             walletBalance = {
-                USD:1220.45,
-                APE:451.20,
-                ETH:12.2391
+                USD:3000,
+                APE:219.129942,
+                ETH:0.02000,
+                MATIC:0,
+                BTC:0
             }
             sessionStorage.setItem('walletBalance',JSON.stringify(walletBalance))
         }
@@ -45,7 +52,8 @@ export const WalletProvider = ({children}) =>{
         
         setShowTransactionModal(false)
         setShowPendingToast(true)
-        if(transaction.symbol==='USD'){
+        setTransactionLoading(true)
+        if(transaction.demo===1){
             setTimeout(()=>{
                 
                 dispatch({
@@ -55,12 +63,75 @@ export const WalletProvider = ({children}) =>{
                         amount:-transaction.amount
                     }
                 })
+                setTransactionDetails({
+                    transactionAmount:transaction.amount,
+                    gasFees:0,
+                    commission:transaction.amount*0.015,
+                    transactionPaths:[{
+                        fromAmount:transaction.amount,
+                        fromSymbol:transaction.symbol,
+                        toAmount:0,
+                        toSymbol:"",
+                        USDValue:transaction.amount,
+                        protocol:'Fiat'
+                    }]
+                })
+                setTransactionLoading(false)
+                setShowPendingToast(false)
+                setShowSuccessToast(true)
+                
+            },2000)
+        }else if(transaction.demo===2){
+            console.log('demo2')
+            //
+        }else if(transaction.demo===3){
+            setTimeout(()=>{
+                console.log('timeout')
+                
+                dispatch({
+                    type:'UPDATEWALLETBALANCE',
+                    data:{
+                        symbol:'ETH',
+                        amount:-0.1
+                    }
+                })
+                dispatch({
+                    type:'UPDATEWALLETBALANCE',
+                    data:{
+                        symbol:'APE',
+                        amount:-219.129942
+                    }
+                })
+                setTransactionDetails({
+                    transactionAmount:transaction.amount/USDRates[transaction.symbol],
+                    gasFees:(transaction.amount*0.01)/USDRates[transaction.symbol],
+                    commission:(transaction.amount*0.015)/USDRates[transaction.symbol],
+                    transactionPaths:[{
+                        fromAmount:0.1,
+                        fromSymbol:transaction.symbol,
+                        toAmount:0,
+                        toSymbol:"",
+                        USDValue:0.1/USDRates[transaction.symbol],
+                        protocol:'Ethereum'
+                    },{
+                        fromAmount:219.129942,
+                        fromSymbol:'APE',
+                        toAmount:0.9,
+                        toSymbol:"ETH",
+                        USDValue:0.9/USDRates[transaction.symbol],
+                        protocol:'LayerZero'
+                    }]
+                })
+                setTransactionLoading(false)
                 setShowPendingToast(false)
                 setShowSuccessToast(true)
             },2000)
-        }else{
-            //
         }
+    }
+
+    const closeTransactionDetails= ()=>{
+        setTransactionDetails('')
+        setShowTransactionDetailsModal(false)
     }
 
     const requestTransaction = (transaction)=>{
@@ -72,14 +143,33 @@ export const WalletProvider = ({children}) =>{
         //check if logged in
         //if logged in, show transaction modal
         //else prompt for login
-
-        setTransaction({
+        var newTransaction = {
             url:transaction.url,
             toWalletAddress:transaction.toWalletAddress,
             amount:transaction.amount,
+            commission:0,
             symbol:transaction.symbol,
-            status:'pre-approval'
-        })
+            status:'pre-approval',
+            demo:transaction.demo
+        }
+        if(transaction.demo===1)
+        {
+            setTransaction({
+                ...newTransaction,
+                commission:transaction.amount*0.015,
+                gasFees:0
+            })
+        }
+        else if(transaction.demo===2){
+
+        }else if(transaction.demo===3){
+            setTransaction({
+                ...newTransaction,
+                commission:transaction.amount*0.015,
+                gasFees:transaction.amount*0.01
+            })
+        }
+
     }
 
     const rejectTransaction =()=>{
@@ -133,12 +223,16 @@ export const WalletProvider = ({children}) =>{
         showTransactionModal,
         showAuthModal,
         transaction,
+        transactionDetails,
+        transactionLoading,
         approveTransaction,
+        closeTransactionDetails,
         requestTransaction,
+        connect,
         rejectTransaction,
+        showTransactionDetailsModal,
         setShowAuthModal,
         setLoading,
-        connect,
         
     }}>
         {children}
@@ -157,6 +251,10 @@ export const WalletProvider = ({children}) =>{
                         style={{height:35,width:35,marginRight:8}}
                     />
                     <Typography>Transaction Completed</Typography>
+                    <Button onClick={()=>{
+                        setShowTransactionDetailsModal(true)
+                        setShowSuccessToast(false)
+                    }}>View</Button>
                 </Grid>
             </Paper>
         </Snackbar>
@@ -174,7 +272,11 @@ export const WalletProvider = ({children}) =>{
                         src='/images/logo.png'
                         style={{height:35,width:35,marginRight:8}}
                     />
-                    <Typography>Transaction Pending</Typography>
+                    <Typography style={{flexGrow:1}}>Transaction Pending</Typography>
+                    <Button onClick={()=>{
+                        setShowTransactionDetailsModal(true)
+                        setShowPendingToast(false)
+                    }}>View</Button>
                 </Grid>
             </Paper>
         </Snackbar>

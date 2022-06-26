@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import { Button, Dialog, DialogContent, DialogTitle, Divider, Grid, Icon, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
 import { useWeb3 } from '../../contexts/wallet-context'
 import { useSelector } from 'react-redux'
-import LoadingOverlay from './loading-overlay'
+
 
 const TransactionModal = (props)=>{
     const {showTransactionModal,approveTransaction,transaction,rejectTransaction} = useWeb3()
     const USDRates = useSelector(state=>state.walletReducer.USDRates)
     var usdAmount = transaction.amount/USDRates[transaction.symbol]
-    var gasFees = 0
-    if(transaction.symbol!=='USD'){
-        //gasfee is 1% of crypto
-        gasFees = transaction.amount*0.01/USDRates[transaction.symbol]
+    console.log(transaction.demo==1)
+    var toWalletAddress = transaction.toWalletAddress.substring(0,5) + "..." + transaction.toWalletAddress.substring(transaction.toWalletAddress.length-4)
+    if(transaction.demo==1)
+    {
+        toWalletAddress = transaction.toWalletAddress
     }
     return <Dialog open={showTransactionModal} >
         <DialogTitle>
@@ -38,7 +39,7 @@ const TransactionModal = (props)=>{
                     <Grid item xs={12} style={{marginBottom:16}}>
                         <Typography style={{marginBottom:8}}><strong>To</strong></Typography>
                         <Grid container direction='row' style={{alignItems:'center'}}>
-                            <Typography style={{marginRight:4}}><strong>{transaction.toWalletAddress.substring(0,5)}...{transaction.toWalletAddress.substring(transaction.toWalletAddress.length-4)}</strong></Typography>
+                            <Typography style={{marginRight:4}}><strong>{toWalletAddress}</strong></Typography>
                             <Typography style={{color:'#949494',fontSize:14}}>{transaction.symbol}</Typography>
                         </Grid>
 
@@ -52,13 +53,19 @@ const TransactionModal = (props)=>{
                             <Typography style={{flexGrow:1,fontSize:14}}><strong>Transaction Amount</strong></Typography>
                             <Typography style={{fontSize:14,color:'#949494'}}>USD {usdAmount.toFixed(2)}</Typography>
                         </Grid>
+                        {
+                            transaction.gasFees===0?"":<Grid container direction='row' style={{alignItems:'center',marginBottom:8}}>
+                                <Typography style={{flexGrow:1,fontSize:14}}><strong>Gas Fees</strong></Typography>
+                                <Typography style={{fontSize:14,color:'#949494'}}>USD {transaction.gasFees.toFixed(2)}</Typography>
+                            </Grid>
+                        }
                         <Grid container direction='row' style={{alignItems:'center',marginBottom:8}}>
-                            <Typography style={{flexGrow:1,fontSize:14}}><strong>Gas Fees</strong></Typography>
-                            <Typography style={{fontSize:14,color:'#949494'}}>USD {gasFees.toFixed(2)}</Typography>
+                            <Typography style={{flexGrow:1,fontSize:14}}><strong>Commission</strong></Typography>
+                            <Typography style={{fontSize:14,color:'#949494'}}>USD {transaction.commission.toFixed(2)}</Typography>
                         </Grid>
                         <Grid container direction='row' style={{alignItems:'center'}}>
                             <Typography style={{flexGrow:1,fontSize:16}}><strong>Total</strong></Typography>
-                            <Typography><strong>USD {(usdAmount+gasFees).toFixed(2)}</strong></Typography>
+                            <Typography><strong>USD {(usdAmount+transaction.gasFees+transaction.commission).toFixed(2)}</strong></Typography>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
@@ -77,9 +84,6 @@ const TransactionModal = (props)=>{
                         </Grid>
                     </Grid>
                 </Grid>
-            }
-            {
-                transaction.status==='pending'?<LoadingOverlay/>:""
             }
            
         </DialogContent>
