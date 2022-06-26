@@ -28,6 +28,7 @@ export function reducer(state= {
                 ...state.walletBalance,
                 [action.data.symbol]:action.data.value
             }
+sessionStorage.setItem('walletBalance',JSON.stringify(newWalletBalance))
             return{
                 ...state,
                 walletBalance:newWalletBalance
